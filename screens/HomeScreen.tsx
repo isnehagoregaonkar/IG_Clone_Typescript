@@ -5,11 +5,12 @@ import Stories from '../components/Home/Stories';
 import Post from '../components/Home/Post';
 import { posts } from '../data/posts';
 import BottomTab from '../components/Home/BottomTab';
+import { RouterProps } from '../utils/PropTypes';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}:RouterProps) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <Header navigation={navigation} />
       <Stories />
       <ScrollView>
         {

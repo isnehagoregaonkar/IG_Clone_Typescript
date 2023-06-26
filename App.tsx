@@ -22,13 +22,13 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import HomeScreen from './screens/HomeScreen';
 import NewPostScreen from './screens/NewPostScreen';
+import { SignedInStack } from './navigation';
 
 
 
 function App(): JSX.Element {
-
   return (
-    <NewPostScreen />
+    <SignedInStack/>
   );
 }
 

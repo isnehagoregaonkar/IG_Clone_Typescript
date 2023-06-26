@@ -3,27 +3,32 @@ import React, { isValidElement, useState } from 'react'
 import * as Yup from 'yup'
 import { Formik } from 'formik';
 import { Divider } from 'react-native-elements';
+import { RouterProps } from '../../utils/PropTypes';
+const validUrl = require('valid-url');
 
-const PLACEHOLDERIMG = require('../../assets/placeholder.png')
+
+const PLACEHOLDERIMG = "https://placehold.co/600x400.png";
 
 const uploadPostSchema = Yup.object().shape({
   imageUrl: Yup.string().url().required('A URL is required'),
   caption: Yup.string().max(2200, 'Caption has reached the character limit')
 })
 
-const FormikPostUploader = () => {
+const FormikPostUploader = ({navigation}:RouterProps) => {
   const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDERIMG)
   return (
     <Formik
       initialValues={{ caption: '', imageUrl: '' }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={()=>{
+        navigation.goBack()
+      }}
       validationSchema={uploadPostSchema}
       validateOnMount={true}
     >
       {({ handleBlur, handleChange, handleSubmit, values, errors, isValid }) =>
         <>
           <View style={{ margin: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Image source={PLACEHOLDERIMG}
+            <Image source={{uri:validUrl.isUri(thumbnailUrl)?thumbnailUrl:PLACEHOLDERIMG}}
               style={{
                 width: 100,
                 height: 100
@@ -45,6 +50,7 @@ const FormikPostUploader = () => {
           </View>
           <Divider width={0.2} orientation='vertical' />
           <TextInput
+          onChange={(e)=>setThumbnailUrl(e.nativeEvent.text)}
             placeholder='Enter Image URL....'
             placeholderTextColor='gray'
             style={{

@@ -3,15 +3,16 @@ import React from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5Brands from 'react-native-vector-icons/FontAwesome5';
+import { RouterProps } from '../../utils/PropTypes';
 
-const Header = () => {
+const Header = ({navigation}:RouterProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
         <Image source={require('../../assets/header-logo.png')} style={styles.logo} />
       </TouchableOpacity>
       <View style={styles.iconsContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('NewPostScreen')}>
           <Octicons name="diff-added" style={styles.icon} size={26} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity>

@@ -2,19 +2,20 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FormikPostUploader from './FormikPostUploader';
+import { RouterProps } from '../../utils/PropTypes';
 
-const AddNewPost = () => {
+const AddNewPost = ({navigation}:RouterProps) => {
     return (
         <View style={styles.container}>
-            <Header />
-            <FormikPostUploader/>
+            <Header navigation={navigation} />
+            <FormikPostUploader navigation={navigation}/>
         </View>
   )
 }
 
-const Header = () => (
+const Header = ({navigation}:RouterProps) => (
     <View style={styles.headerContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.goBack()}>
             <Ionicons name='chevron-back' size={30} color={'#fff'} />
         </TouchableOpacity>
         <Text style={styles.headerText}>New Post</Text>
