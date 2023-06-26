@@ -66,7 +66,7 @@ const FormikPostUploader = () => {
             onPress={handleSubmit}
             disabled={!isValid}
           />
-        </>
+        </> 
       }
 
     </Formik>
