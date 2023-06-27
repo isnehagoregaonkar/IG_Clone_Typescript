@@ -1,17 +1,17 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React from 'react';
-import LoginForm from '../components/Login/LoginForm';
+import LoginForm from '../components/Forms/LoginForm';
+import { INSTAGRAM_LOGO } from '../utils/Constants';
+import { RouterProps } from '../utils/PropTypes';
 
-const INSTAGRAM_LOGO = 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png';
-
-const LoginScreen = () => {
+const LoginScreen = ({navigation}:RouterProps) => {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
                 <Image
                     source={{ uri: INSTAGRAM_LOGO, height: 100, width: 100 }} />
             </View>
-            <LoginForm/>
+            <LoginForm navigation={navigation} />
         </View>
     )
 }
