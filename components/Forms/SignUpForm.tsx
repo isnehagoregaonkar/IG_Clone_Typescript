@@ -1,11 +1,11 @@
 import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Validator from 'email-validator';
 import { RouterProps } from '../../utils/PropTypes';
-import { FirebaseApp, FirebaseAuth } from '../../utils/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import  { FirebaseAuth } from '../../utils/firebase';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 type SignupProps = {
@@ -13,29 +13,27 @@ type SignupProps = {
     username: string
     password: string
 }
-
-const usersCollection = firestore().collection('users');
-
 const SignUpForm = ({ navigation }: RouterProps) => {
     const SignUpFormSchema = Yup.object().shape({
         email: Yup.string().required('An email is required'),
         username: Yup.string().required().min(2, 'Username must contain minimun 2 characters'),
         password: Yup.string().required().min(8, 'Password should be 8 characters long')
     });
-    const getRandomeProfilePicture=async()=>{
-        const response=await fetch('https://randomuser.me/api')
-        const data=await response.json();
+    const getRandomeProfilePicture = async () => {
+        const response = await fetch('https://randomuser.me/api')
+        const data = await response.json();
         return data.results[0].picture.large
     }
 
     const onSignUp = async ({ email, username, password }: SignupProps) => {
         try {
-            const authUser=await createUserWithEmailAndPassword(FirebaseAuth, email, password);
-            usersCollection.add({
-                owner_uid:authUser.user.uid,
-                username:username,
-                email:email,
-                profile_picture:await getRandomeProfilePicture()
+            const authUser = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
+            const userCollection=firestore().collection('users');
+            userCollection.add({
+                owner_uid: authUser.user.uid,
+                username: username,
+                email: email,
+                profile_picture: await getRandomeProfilePicture()
             })
             console.log("Signed up successfully")
         } catch (error) {
