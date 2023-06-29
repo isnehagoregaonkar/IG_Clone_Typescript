@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import Validator from 'email-validator';
 import { RouterProps } from '../../utils/PropTypes';
 import  { FirebaseAuth } from '../../utils/firebase';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 type SignupProps = {
@@ -28,14 +28,15 @@ const SignUpForm = ({ navigation }: RouterProps) => {
     const onSignUp = async ({ email, username, password }: SignupProps) => {
         try {
             const authUser = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
-            const userCollection=firestore().collection('users');
-            userCollection.add({
+            const userCollection=firestore().collection('users').doc(email);
+            userCollection.set({
                 owner_uid: authUser.user.uid,
                 username: username,
                 email: email,
-                profile_picture: await getRandomeProfilePicture()
+                profile_picture: await getRandomeProfilePicture(),
+                password:password
             })
-            console.log("Signed up successfully")
+            console.log("Signed up successfully",email,username,password)
         } catch (error) {
             console.log(error)
         }

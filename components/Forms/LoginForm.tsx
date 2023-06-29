@@ -1,10 +1,10 @@
-import { Button, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native'
+import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native'
 import React from 'react'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Validator from 'email-validator';
 import { RouterProps } from '../../utils/PropTypes';
-import { FirebaseAuth, FirebaseApp } from '../../utils/firebase';
+import { FirebaseAuth } from '../../utils/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
