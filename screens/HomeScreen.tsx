@@ -1,20 +1,26 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Home/Header'
 import Stories from '../components/Home/Stories';
 import Post from '../components/Home/Post';
-import { posts } from '../data/posts';
+import { POSTS } from '../data/posts';
 import BottomTab from '../components/Home/BottomTab';
 import { RouterProps } from '../utils/PropTypes';
+import firestore from '@react-native-firebase/firestore';
 
 const HomeScreen = ({navigation}:RouterProps) => {
+  const [posts,setPosts]=useState([]);
+  useEffect(() => {
+    firestore().collectionGroup('posts').onSnapshot(snapshot=> setPosts(snapshot.docs.map(doc=>doc.data)))
+  }, [])
+  
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
       <Stories />
       <ScrollView>
         {
-          posts.map((post,index)=>{
+          POSTS.map((post,index)=>{
             return(
               <Post post={post} key={index} />
             )

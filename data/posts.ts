@@ -1,6 +1,6 @@
 import { users } from "./users";
 
-export const posts=[
+export const POSTS=[
     {
         imageUrl:"https://source.unsplash.com/1024x768/?nature/0",
         user:users[0].user,

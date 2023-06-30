@@ -5,9 +5,9 @@ import { Formik } from 'formik';
 import { Divider } from 'react-native-elements';
 import { RouterProps } from '../../utils/PropTypes';
 import { FirebaseAuth } from '../../utils/firebase';
-const validUrl = require('valid-url');
 import firestore from '@react-native-firebase/firestore';
 
+const validUrl = require('valid-url');
 
 const PLACEHOLDERIMG = "https://placehold.co/600x400.png";
 
