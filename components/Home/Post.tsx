@@ -5,7 +5,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
-import { POSTS } from '../../data/posts';
+import firestore, { firebase } from '@react-native-firebase/firestore';
+import { FirebaseAuth } from '../../utils/firebase';
 
 type PostProps = {
   post: any
@@ -18,6 +19,7 @@ type CommentProps = {
 }
 
 const Post = ({ post }: PostProps) => {
+
   return (
     <View style={{ marginBottom: 30 }}>
       <Divider width={1} orientation='vertical' />
@@ -61,27 +63,43 @@ const PostImage = ({ post }: PostProps) => (
   </View>
 );
 
-const PostFooter = ({ post }: PostProps) => (
-  <View style={styles.footerView}>
-    <View style={{ flexDirection: 'row' }}>
-      <View style={styles.leftFoooterIconContainer}>
-        <LikeIcon />
-        <CommentIcon />
-        <ShareIcon />
-      </View>
-      <View style={styles.rightFooterIconContainer}>
-        <SaveIcon />
-      </View>
-    </View>
-    <Likes likes={post.likes} />
-    <Caption post={post} />
-    <CommentsSection post={post} />
-    <Comments post={post} />
-  </View>
-);
+const PostFooter = ({ post }: PostProps) => {
+  const handleLike = () => {
+    const currentUserLike = !post.likes_by_users.includes(
+      FirebaseAuth.currentUser?.email
+    )
+    firestore().collection('users').doc(post.owner_email).collection('posts').doc(post.id).update({
+      liked_by_users: currentUserLike ? firestore.FieldValue.arrayUnion(
+        FirebaseAuth.currentUser?.email
+      ) :
+        firebase.firestore.FieldValue.arrayRemove(
+          FirebaseAuth.currentUser?.email
+        )
+    })
+  }
+  return (
 
-const LikeIcon = () => (
-  <TouchableOpacity>
+    <View style={styles.footerView}>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={styles.leftFoooterIconContainer}>
+          <LikeIcon handleLike={handleLike} />
+          <CommentIcon />
+          <ShareIcon />
+        </View>
+        <View style={styles.rightFooterIconContainer}>
+          <SaveIcon />
+        </View>
+      </View>
+      <Likes likes={post.likes_by_users.length} />
+      <Caption post={post} />
+      <CommentsSection post={post} />
+      <Comments post={post} />
+    </View>
+  );
+}
+
+const LikeIcon = ({handleLike}:any) => (
+  <TouchableOpacity onPress={handleLike}>
     <AntDesign name='hearto' size={30} color={'#fff'} />
   </TouchableOpacity>
 )

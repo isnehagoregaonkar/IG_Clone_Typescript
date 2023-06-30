@@ -8,10 +8,13 @@ import BottomTab from '../components/Home/BottomTab';
 import { RouterProps } from '../utils/PropTypes';
 import firestore from '@react-native-firebase/firestore';
 
+
 const HomeScreen = ({navigation}:RouterProps) => {
-  const [posts,setPosts]=useState([]);
+  const [posts,setPosts]=useState<any[]>([]);
   useEffect(() => {
-    firestore().collectionGroup('posts').onSnapshot(snapshot=> setPosts(snapshot.docs.map(doc=>doc.data)))
+    firestore().collectionGroup('posts').onSnapshot(snapshot=>{
+      setPosts(snapshot.docs.map(doc=>doc.data()))
+    })
   }, [])
   
   return (
@@ -20,7 +23,7 @@ const HomeScreen = ({navigation}:RouterProps) => {
       <Stories />
       <ScrollView>
         {
-          POSTS.map((post,index)=>{
+          posts.map((post,index)=>{
             return(
               <Post post={post} key={index} />
             )

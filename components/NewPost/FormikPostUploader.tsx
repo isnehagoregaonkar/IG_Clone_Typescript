@@ -46,6 +46,7 @@ const FormikPostUploader = ({navigation}:RouterProps) => {
 
   const uploadPostToFirebase=({imageUrl,caption}:PostProps)=>{
     const post=firestore().collection('users').doc(currentLoggedInUser?.email).collection('posts').add({
+      owner_email:FirebaseAuth.currentUser?.email,
       imageUrl:imageUrl,
         user:currentLoggedInUser?.username,
         likes:0,
@@ -53,7 +54,6 @@ const FormikPostUploader = ({navigation}:RouterProps) => {
         profile_picture:currentLoggedInUser?.profile_picture,
         likes_by_users:[],
         comments:[
- 
         ]
     });
     return post
