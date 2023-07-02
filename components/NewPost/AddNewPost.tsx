@@ -19,7 +19,7 @@ const Header = ({navigation}:RouterProps) => (
             <Ionicons name='chevron-back' size={30} color={'#fff'} />
         </TouchableOpacity>
         <Text style={styles.headerText}>New Post</Text>
-        <Text></Text>
+        <Text> </Text>
     </View>
 )
 
